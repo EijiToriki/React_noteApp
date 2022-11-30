@@ -2,6 +2,9 @@ import React from 'react'
 import "./Sidebar.css"
 
 export default function Sidebar({onAddNote, onDeleteNote, notes, activeNote, setActiveNote}) {
+  const sortedNotes = notes.sort((a, b) => b.modDate - a.modDate)
+  console.log(sortedNotes)
+
   return (
     <div className='app-sidebar'>
       <div className='app-sidebar-header'>
@@ -9,7 +12,7 @@ export default function Sidebar({onAddNote, onDeleteNote, notes, activeNote, set
         <button onClick={onAddNote}>追加</button>
       </div>
       <div className='app-sidebar-notes'>
-      {notes.map((note) => {
+      {sortedNotes.map((note) => {
         return(
           <div className={`app-sidebar-note ${note.id === activeNote ? 'active' : ''}`} 
                key={note.id} 
@@ -20,7 +23,14 @@ export default function Sidebar({onAddNote, onDeleteNote, notes, activeNote, set
               <button onClick={() => onDeleteNote(note.id)}>削除</button>
             </div>
             <p>{note.content}</p>
-            <small>最後の修正日 : {note.modDate}</small>
+            <small>
+              最後の修正日 : 
+              {
+              new Date().toLocaleDateString("ja-JP", {
+              hour: "2-digit",
+              minute: "2-digit"
+              })}
+            </small>
           </div>
         )
       })}
